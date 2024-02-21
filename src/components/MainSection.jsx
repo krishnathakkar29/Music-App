@@ -11,7 +11,7 @@ function MainSection() {
       "https://saavn.dev/modules?language=hindi"
     );
     const { data } = await response.data;
-    console.log(data);
+    // console.log(data);
     setAlbums(data.albums);
     setTrending(data.trending);
   };

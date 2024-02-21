@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import MusicContext from "../context/MusicContext";
+import axios from "axios";
 function Navbar() {
+  const { setSearchedSongs } = useContext(MusicContext);
+  const handleOnChange = async (e) => {
+    const res = await axios.get(
+      `https://saavn.dev/search/songs?query=${e.target.value}&page=1&limit=2`
+    );
+    const { data } = await res.data;
+    if (
+      data.results.length === 0 ||
+      e.target.value === "" ||
+      e.target.value.length === 0
+    ) {
+      setSearchedSongs([]);
+    } else {
+      setSearchedSongs(data.results);
+    }
+
+    // console.log(data.results);
+  };
+
+  // console.log(data.results);
   return (
     <>
       <nav className="flex justify-between items-center p-3 fixed z-[999] border-none lg:border  top-0 left-0 right-0 bg-[#f5f5f5ff] py-1">
@@ -26,6 +48,9 @@ function Navbar() {
             id="search"
             className="py-2 rounded-full outline-none text-center text-black w-[40vw] border"
             placeholder="Search for Songs"
+            autoComplete="off"
+            autoCorrect="off"
+            onChange={handleOnChange}
           />
         </div>
 
